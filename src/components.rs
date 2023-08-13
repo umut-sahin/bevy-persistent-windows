@@ -82,6 +82,6 @@ impl WindowState {
 
 impl Default for WindowState {
     fn default() -> WindowState {
-        WindowState::fullscreen()
+        WindowState::borderless_fullscreen()
     }
 }
