@@ -26,10 +26,31 @@ pub struct WindowState {
 }
 
 impl WindowState {
+    /// Creates a borderless fullscreen state.
+    pub fn borderless_fullscreen() -> WindowState {
+        WindowState {
+            mode: WindowMode::BorderlessFullscreen,
+            monitor: None,
+            resolution: None,
+            position: None,
+            sync: true,
+        }
+    }
+
     /// Creates a fullscreen state.
     pub fn fullscreen() -> WindowState {
         WindowState {
             mode: WindowMode::Fullscreen,
+            monitor: None,
+            resolution: None,
+            position: None,
+            sync: true,
+        }
+    }
+    /// Creates a sized fullscreen state.
+    pub fn sized_fullscreen() -> WindowState {
+        WindowState {
+            mode: WindowMode::SizedFullscreen,
             monitor: None,
             resolution: None,
             position: None,
