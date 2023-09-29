@@ -12,6 +12,7 @@ pub(crate) use bevy::{
         WindowMode,
         WindowResized,
         WindowResolution,
+        WindowScaleFactorChanged,
     },
     winit::WinitWindows,
 };

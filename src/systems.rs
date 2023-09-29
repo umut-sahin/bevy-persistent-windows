@@ -46,6 +46,28 @@ pub fn on_persistent_window_resized(
     }
 }
 
+/// System to update persistent state when window scale factor is changed.
+pub fn on_persistent_window_scale_factor_changed(
+    mut window_scale_factor_changed_events: EventReader<WindowScaleFactorChanged>,
+    mut persistent_windows: Query<(Entity, &Window, &mut Persistent<WindowState>)>,
+    winit_windows: NonSend<WinitWindows>,
+) {
+    if window_scale_factor_changed_events.is_empty() {
+        return;
+    }
+
+    for event in window_scale_factor_changed_events.iter() {
+        if let Some((entity, window, mut state)) =
+            persistent_windows.iter_mut().find(|(entity, _, _)| event.window == *entity)
+        {
+            let winit_window_id = &winit_windows.entity_to_winit[&entity];
+            let winit_window = &winit_windows.windows[winit_window_id];
+
+            utils::apply_window_to_state(window, &mut state, winit_window);
+        }
+    }
+}
+
 /// System to update window when persistent state is modified programmatically.
 pub fn on_persistent_window_state_changed(
     mut persistent_windows: Query<

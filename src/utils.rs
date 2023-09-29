@@ -111,6 +111,7 @@ pub fn adjust_to_monitor(
             let best_resolution = best_video_mode.size();
             (best_resolution.width, best_resolution.height)
         })),
+        scale: Some(state.scale.unwrap_or_else(|| handle.scale_factor())),
         position: state.position,
         sync: state.sync,
     };
@@ -129,10 +130,13 @@ pub fn apply_state_to_window(
     monitor_index: Option<usize>,
 ) {
     let mode = state.mode;
-    let resolution = WindowResolution::new(
+    let mut resolution = WindowResolution::new(
         state.resolution.unwrap().0 as f32,
         state.resolution.unwrap().1 as f32,
     );
+    if let Some(scale) = state.scale {
+        resolution = resolution.with_scale_factor_override(scale);
+    }
     let position = if let Some(position) = state.position {
         WindowPosition::new(position.into())
     } else {
@@ -155,6 +159,7 @@ pub fn apply_window_to_state(
     let monitor = winit_window.current_monitor().and_then(|monitor| monitor.name());
     let mode = window.mode;
     let resolution = Some((winit_window.inner_size().width, winit_window.inner_size().height));
+    let scale = Some(window.scale_factor());
     let position = winit_window
         .outer_position()
         .map(|outer_position| Some((outer_position.x, outer_position.y)))
@@ -165,7 +170,7 @@ pub fn apply_window_to_state(
             }
         });
 
-    let new_state = WindowState { monitor, mode, resolution, position, sync: state.sync };
+    let new_state = WindowState { monitor, mode, resolution, scale, position, sync: state.sync };
     if new_state != *state.get() {
         state.set(new_state).ok();
         state.sync = false;

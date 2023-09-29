@@ -42,7 +42,14 @@ impl Plugin for PersistentWindowsPlugin {
             },
         }
 
-        app.add_systems(PreUpdate, (on_persistent_window_moved, on_persistent_window_resized));
+        app.add_systems(
+            PreUpdate,
+            (
+                on_persistent_window_moved,
+                on_persistent_window_resized,
+                on_persistent_window_scale_factor_changed,
+            ),
+        );
         app.add_systems(PostUpdate, on_persistent_window_state_changed);
     }
 }

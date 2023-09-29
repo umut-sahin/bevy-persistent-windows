@@ -3,7 +3,7 @@
 use crate::prelude::*;
 
 /// Window state.
-#[derive(Clone, Component, Debug, Deserialize, Eq, PartialEq, Resource, Serialize)]
+#[derive(Clone, Component, Debug, Deserialize, PartialEq, Resource, Serialize)]
 #[serde(default)]
 pub struct WindowState {
     /// Mode of the window.
@@ -16,6 +16,10 @@ pub struct WindowState {
     /// Resolution of the window.
     /// (`None` means pick the best resolution)
     pub resolution: Option<(u32, u32)>,
+
+    /// Scale of the window.
+    /// (`None` means pick the best scale)
+    pub scale: Option<f64>,
 
     /// Position of the window.
     /// (`None` means centered)
@@ -32,6 +36,7 @@ impl WindowState {
             mode: WindowMode::BorderlessFullscreen,
             monitor: None,
             resolution: None,
+            scale: None,
             position: None,
             sync: true,
         }
@@ -43,6 +48,7 @@ impl WindowState {
             mode: WindowMode::Fullscreen,
             monitor: None,
             resolution: None,
+            scale: None,
             position: None,
             sync: true,
         }
@@ -53,6 +59,7 @@ impl WindowState {
             mode: WindowMode::SizedFullscreen,
             monitor: None,
             resolution: None,
+            scale: None,
             position: None,
             sync: true,
         }
@@ -64,6 +71,7 @@ impl WindowState {
             mode: WindowMode::Windowed,
             monitor: None,
             resolution: Some((width, height)),
+            scale: None,
             position: None,
             sync: true,
         }
@@ -76,6 +84,12 @@ impl WindowState {
         if self.mode == WindowMode::Windowed {
             self.position = Some((x, y));
         }
+        self
+    }
+
+    /// Adds scale information to the state.
+    pub fn scaled(mut self, scale: f64) -> WindowState {
+        self.scale = Some(scale);
         self
     }
 }
