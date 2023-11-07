@@ -238,7 +238,7 @@ Please let me know if you know ways to get around these limitations!
 
 All code in this repository is dual-licensed under either:
 
-- MIT License ([LICENSE-MIT](https://github.com/umut-sahin/bevy-persistent/blob/main/LICENSE-MIT) or <https://opensource.org/licenses/MIT>)
-- Apache License, Version 2.0 ([LICENSE-APACHE]((https://github.com/umut-sahin/bevy-persistent/blob/main/LICENSE-APACHE)) or <https://www.apache.org/licenses/LICENSE-2.0>)
+- MIT License ([LICENSE-MIT](https://github.com/umut-sahin/bevy-persistent-windows/blob/main/LICENSE-MIT) or <https://opensource.org/licenses/MIT>)
+- Apache License, Version 2.0 ([LICENSE-APACHE]((https://github.com/umut-sahin/bevy-persistent-windows/blob/main/LICENSE-APACHE)) or <https://www.apache.org/licenses/LICENSE-2.0>)
 
 This means you can select the license you prefer!
