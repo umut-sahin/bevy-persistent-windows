@@ -12,7 +12,7 @@ pub fn on_persistent_window_moved(
         return;
     }
 
-    for event in window_moved_events.iter() {
+    for event in window_moved_events.read() {
         if let Some((entity, window, mut state)) =
             persistent_windows.iter_mut().find(|(entity, _, _)| event.entity == *entity)
         {
@@ -34,7 +34,7 @@ pub fn on_persistent_window_resized(
         return;
     }
 
-    for event in window_resized_events.iter() {
+    for event in window_resized_events.read() {
         if let Some((entity, window, mut state)) =
             persistent_windows.iter_mut().find(|(entity, _, _)| event.window == *entity)
         {
@@ -56,7 +56,7 @@ pub fn on_persistent_window_scale_factor_changed(
         return;
     }
 
-    for event in window_scale_factor_changed_events.iter() {
+    for event in window_scale_factor_changed_events.read() {
         if let Some((entity, window, mut state)) =
             persistent_windows.iter_mut().find(|(entity, _, _)| event.window == *entity)
         {

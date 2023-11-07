@@ -12,14 +12,14 @@ authors = [
 ]
 
 [dependencies]
-bevy = { version = "0.11", features = ["serialize"] }
-bevy-persistent = { version = "0.3" }
+bevy = { version = "0.12", features = ["serialize"] }
+bevy-persistent = { version = "0.4" }
 serde = { version = "1.0", features = ["derive"] }
 winit = { version = "0.28", default-features = false }
 
 [dev-dependencies]
 dirs = { version = "5.0" }
-bevy-persistent = { version = "0.3", features = ["toml"] }
+bevy-persistent = { version = "0.4", features = ["toml"] }
 
 [features]
 default = []

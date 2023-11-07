@@ -43,7 +43,7 @@ fn main() {
 
     app.add_plugins(PersistentWindowsPlugin);
 
-    app.insert_resource(FixedTime::new_from_secs(3.0));
+    app.insert_resource(Time::<Fixed>::from_seconds(3.0));
     app.add_systems(FixedUpdate, spawn_persistent_window);
 
     app.insert_resource(Directories { state_directory });
