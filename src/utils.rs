@@ -135,7 +135,7 @@ pub fn apply_state_to_window(
         state.resolution.unwrap().1 as f32,
     );
     if let Some(scale) = state.scale {
-        resolution = resolution.with_scale_factor_override(scale);
+        resolution = resolution.with_scale_factor_override(scale as f32);
     }
     let position = if let Some(position) = state.position {
         WindowPosition::new(position.into())
@@ -159,7 +159,7 @@ pub fn apply_window_to_state(
     let monitor = winit_window.current_monitor().and_then(|monitor| monitor.name());
     let mode = window.mode;
     let resolution = Some((winit_window.inner_size().width, winit_window.inner_size().height));
-    let scale = Some(window.scale_factor());
+    let scale = Some(window.scale_factor() as f64);
     let position = winit_window
         .outer_position()
         .map(|outer_position| Some((outer_position.x, outer_position.y)))

@@ -14,7 +14,7 @@ pub fn on_persistent_window_moved(
 
     for event in window_moved_events.read() {
         if let Some((entity, window, mut state)) =
-            persistent_windows.iter_mut().find(|(entity, _, _)| event.entity == *entity)
+            persistent_windows.iter_mut().find(|(entity, _, _)| event.window == *entity)
         {
             let winit_window_id = &winit_windows.entity_to_winit[&entity];
             let winit_window = &winit_windows.windows[winit_window_id];

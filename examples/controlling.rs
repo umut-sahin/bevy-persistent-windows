@@ -47,7 +47,7 @@ fn main() {
 }
 
 fn fullscreen_toggle(
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     mut query: Query<&mut Persistent<WindowState>, With<PrimaryWindow>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
@@ -65,7 +65,7 @@ fn fullscreen_toggle(
 
 fn movement(
     time: Res<Time>,
-    keyboard_input: Res<Input<KeyCode>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     mut query: Query<&mut Persistent<WindowState>, With<PrimaryWindow>>,
 ) {
     let mut position_change = (0.0, 0.0);
@@ -77,16 +77,16 @@ fn movement(
         &mut position_change
     };
 
-    if keyboard_input.pressed(KeyCode::Up) {
+    if keyboard_input.pressed(KeyCode::ArrowUp) {
         change.1 -= 3.0 * time.delta().as_millis() as f32;
     }
-    if keyboard_input.pressed(KeyCode::Left) {
+    if keyboard_input.pressed(KeyCode::ArrowLeft) {
         change.0 -= 3.0 * time.delta().as_millis() as f32;
     }
-    if keyboard_input.pressed(KeyCode::Down) {
+    if keyboard_input.pressed(KeyCode::ArrowDown) {
         change.1 += 3.0 * time.delta().as_millis() as f32;
     }
-    if keyboard_input.pressed(KeyCode::Right) {
+    if keyboard_input.pressed(KeyCode::ArrowRight) {
         change.0 += 3.0 * time.delta().as_millis() as f32;
     }
 
