@@ -18,7 +18,7 @@ impl Plugin for PersistentWindowsPlugin {
     fn build(&self, app: &mut App) {
         let event_loop = app
             .world
-            .get_non_send_resource::<EventLoop<()>>()
+            .get_non_send_resource::<EventLoop<RequestRedraw>>()
             .expect("persistent windows plugin is added before winit plugin");
 
         match utils::available_monitors(event_loop) {
@@ -41,6 +41,14 @@ impl Plugin for PersistentWindowsPlugin {
                 log::error!("unable to persist windows as no monitors are available");
             },
         }
+
+        let event_loop = app.world.remove_non_send_resource::<EventLoop<RequestRedraw>>().unwrap();
+
+        let mut create_window = SystemState::<CreateWindowParams>::from_world(&mut app.world);
+        create_windows(event_loop.deref(), create_window.get_mut(&mut app.world));
+        create_window.apply(&mut app.world);
+
+        app.insert_non_send_resource(event_loop);
 
         app.add_systems(
             PreUpdate,

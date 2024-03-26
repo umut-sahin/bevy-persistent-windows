@@ -8,7 +8,7 @@ use crate::prelude::*;
 ///
 /// Returns [None] if no monitors are available.
 pub fn available_monitors(
-    event_loop: &EventLoop<()>,
+    event_loop: &EventLoop<RequestRedraw>,
 ) -> Option<HashMap<String, (usize, MonitorHandle)>> {
     let available_monitors = event_loop
         .available_monitors()
