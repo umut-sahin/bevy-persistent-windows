@@ -130,13 +130,13 @@ pub fn apply_state_to_window(
     monitor_index: Option<usize>,
 ) {
     let mode = state.mode;
-    let mut resolution = WindowResolution::new(
-        state.resolution.unwrap().0 as f32,
-        state.resolution.unwrap().1 as f32,
-    );
+
+    let mut resolution = WindowResolution::default();
     if let Some(scale) = state.scale {
-        resolution = resolution.with_scale_factor_override(scale as f32);
+        resolution.set_scale_factor_override(Some(scale as f32));
     }
+    resolution.set_physical_resolution(state.resolution.unwrap().0, state.resolution.unwrap().1);
+
     let position = if let Some(position) = state.position {
         WindowPosition::new(position.into())
     } else {
