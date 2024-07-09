@@ -25,7 +25,7 @@ fn main() {
         .unwrap_or(Path::new("session").join("data").join("state"))
         .join("primary");
 
-    app.world.spawn((
+    app.world_mut().spawn((
         PrimaryWindow,
         PersistentWindowBundle {
             window: Window { title: "I am primary...".to_owned(), ..Default::default() },

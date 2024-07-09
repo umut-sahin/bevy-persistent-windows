@@ -82,6 +82,6 @@ pub fn on_persistent_window_state_changed(
         }
 
         state.persist().ok();
-        utils::apply_state_to_window(window.deref_mut(), state.deref_mut(), None);
+        utils::apply_state_to_window(window.deref_mut(), state.deref_mut());
     }
 }

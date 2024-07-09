@@ -10,45 +10,18 @@ use crate::prelude::*;
 /// # Panics
 ///
 /// - Panics if it's added to the [App]
-/// before [WinitPlugin](bevy::winit::WinitPlugin),
-/// which is in the [DefaultPlugins].
+///   before [WinitPlugin](bevy::winit::WinitPlugin),
+///   which is in the [DefaultPlugins].
 pub struct PersistentWindowsPlugin;
 
 impl Plugin for PersistentWindowsPlugin {
     fn build(&self, app: &mut App) {
-        let event_loop = app
-            .world
-            .get_non_send_resource::<EventLoop<RequestRedraw>>()
-            .expect("persistent windows plugin is added before winit plugin");
+        let mut persistent_windows =
+            app.world_mut().query::<(&mut Window, &Persistent<WindowState>)>();
 
-        match utils::available_monitors(event_loop) {
-            Some(available_monitors) => {
-                let best_monitor = utils::best_monitor(&available_monitors);
-
-                let mut persistent_windows =
-                    app.world.query::<(&mut Window, &mut Persistent<WindowState>)>();
-
-                for (mut window, mut state) in persistent_windows.iter_mut(&mut app.world) {
-                    utils::adjust_to_monitor(
-                        &available_monitors,
-                        best_monitor,
-                        &mut window,
-                        &mut state,
-                    );
-                }
-            },
-            None => {
-                log::error!("unable to persist windows as no monitors are available");
-            },
+        for (mut window, state) in persistent_windows.iter_mut(app.world_mut()) {
+            utils::apply_state_to_window(&mut window, state);
         }
-
-        let event_loop = app.world.remove_non_send_resource::<EventLoop<RequestRedraw>>().unwrap();
-
-        let mut create_window = SystemState::<CreateWindowParams>::from_world(&mut app.world);
-        create_windows(event_loop.deref(), create_window.get_mut(&mut app.world));
-        create_window.apply(&mut app.world);
-
-        app.insert_non_send_resource(event_loop);
 
         app.add_systems(
             PreUpdate,
