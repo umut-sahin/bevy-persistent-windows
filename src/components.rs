@@ -9,10 +9,6 @@ pub struct WindowState {
     /// Mode of the window.
     pub mode: WindowMode,
 
-    /// Name of the monitor that the window is in.
-    /// (`None` means pick the best monitor)
-    pub monitor: Option<String>,
-
     /// Resolution of the window.
     /// (`None` means pick the best resolution)
     pub resolution: Option<(u32, u32)>,
@@ -34,7 +30,6 @@ impl WindowState {
     pub fn borderless_fullscreen() -> WindowState {
         WindowState {
             mode: WindowMode::BorderlessFullscreen,
-            monitor: None,
             resolution: None,
             scale: None,
             position: None,
@@ -46,7 +41,6 @@ impl WindowState {
     pub fn fullscreen() -> WindowState {
         WindowState {
             mode: WindowMode::Fullscreen,
-            monitor: None,
             resolution: None,
             scale: None,
             position: None,
@@ -57,7 +51,6 @@ impl WindowState {
     pub fn sized_fullscreen() -> WindowState {
         WindowState {
             mode: WindowMode::SizedFullscreen,
-            monitor: None,
             resolution: None,
             scale: None,
             position: None,
@@ -69,7 +62,6 @@ impl WindowState {
     pub fn windowed(width: u32, height: u32) -> WindowState {
         WindowState {
             mode: WindowMode::Windowed,
-            monitor: None,
             resolution: Some((width, height)),
             scale: None,
             position: None,

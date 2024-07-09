@@ -63,7 +63,7 @@ let state_directory = dirs::data_dir()
 Time to create the primary window:
 
 ```rust
-app.world.spawn((
+app.world_mut().spawn((
     PrimaryWindow,
     PersistentWindowBundle {
         window: Window { title: "I am the primary window!".to_owned(), ..Default::default() },
