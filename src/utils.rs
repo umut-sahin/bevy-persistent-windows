@@ -28,15 +28,10 @@ pub fn apply_window_to_state(
     let mode = window.mode;
     let resolution = Some((winit_window.inner_size().width, winit_window.inner_size().height));
     let scale = Some(window.scale_factor() as f64);
-    let position = winit_window
-        .outer_position()
-        .map(|outer_position| Some((outer_position.x, outer_position.y)))
-        .unwrap_or_else(|_| {
-            match window.position {
-                WindowPosition::At(position) => Some((position.x, position.y)),
-                _ => state.position,
-            }
-        });
+    let position = match window.position {
+        WindowPosition::At(position) => Some((position.x, position.y)),
+        _ => state.position,
+    };
 
     let new_state = WindowState { mode, resolution, scale, position, sync: state.sync };
     if new_state != *state.get() {
