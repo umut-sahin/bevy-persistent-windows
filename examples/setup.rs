@@ -17,21 +17,18 @@ fn main() {
         .unwrap_or(Path::new("session").join("data").join("state"))
         .join("setup");
 
-    app.world_mut().spawn((
-        PrimaryWindow,
-        PersistentWindowBundle {
-            window: Window { title: "I persist!".to_owned(), ..Default::default() },
-            state: Persistent::<WindowState>::builder()
-                .name("primary window state")
-                .format(StorageFormat::Toml)
-                .path(state_directory.join("primary-window.toml"))
-                .default(WindowState::windowed(1280, 720))
-                .revertible(true)
-                .revert_to_default_on_deserialization_errors(true)
-                .build()
-                .expect("failed to create the persistent primary window state"),
-        },
-    ));
+    app.world_mut().spawn((PrimaryWindow, PersistentWindowBundle {
+        window: Window { title: "I persist!".to_owned(), ..Default::default() },
+        state: Persistent::<WindowState>::builder()
+            .name("primary window state")
+            .format(StorageFormat::Toml)
+            .path(state_directory.join("primary-window.toml"))
+            .default(WindowState::windowed(1280, 720))
+            .revertible(true)
+            .revert_to_default_on_deserialization_errors(true)
+            .build()
+            .expect("failed to create the persistent primary window state"),
+    }));
 
     app.add_plugins(PersistentWindowsPlugin);
 
