@@ -32,7 +32,7 @@ impl WindowState {
     /// Creates a borderless fullscreen state.
     pub fn borderless_fullscreen() -> WindowState {
         WindowState {
-            mode: WindowMode::BorderlessFullscreen,
+            mode: WindowMode::BorderlessFullscreen(MonitorSelection::Primary),
             resolution: None,
             position: None,
             scale: None,
@@ -44,7 +44,7 @@ impl WindowState {
     /// Creates a fullscreen state.
     pub fn fullscreen() -> WindowState {
         WindowState {
-            mode: WindowMode::Fullscreen,
+            mode: WindowMode::Fullscreen(MonitorSelection::Primary),
             resolution: None,
             position: None,
             scale: None,
@@ -55,7 +55,7 @@ impl WindowState {
     /// Creates a sized fullscreen state.
     pub fn sized_fullscreen() -> WindowState {
         WindowState {
-            mode: WindowMode::SizedFullscreen,
+            mode: WindowMode::SizedFullscreen(MonitorSelection::Primary),
             resolution: None,
             position: None,
             scale: None,
@@ -96,7 +96,7 @@ impl WindowState {
 impl Default for WindowState {
     fn default() -> WindowState {
         WindowState {
-            mode: WindowMode::BorderlessFullscreen,
+            mode: WindowMode::BorderlessFullscreen(MonitorSelection::Primary),
             resolution: None,
             position: None,
             scale: None,
