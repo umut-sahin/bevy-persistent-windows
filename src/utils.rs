@@ -33,7 +33,14 @@ pub fn apply_window_to_state(
         _ => state.position,
     };
 
-    let new_state = WindowState { mode, resolution, scale, position, sync: state.sync };
+    let new_state = WindowState {
+        mode,
+        resolution,
+        position,
+        scale,
+        auto_scaled: state.auto_scaled,
+        sync: state.sync,
+    };
     if new_state != *state.get() {
         state.set(new_state).ok();
         state.sync = false;

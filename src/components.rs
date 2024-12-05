@@ -13,13 +13,16 @@ pub struct WindowState {
     /// (`None` means pick the best resolution)
     pub resolution: Option<(u32, u32)>,
 
+    /// Position of the window.
+    /// (`None` means centered)
+    pub position: Option<(i32, i32)>,
+
     /// Scale of the window.
     /// (`None` means pick the best scale)
     pub scale: Option<f64>,
 
-    /// Position of the window.
-    /// (`None` means centered)
-    pub position: Option<(i32, i32)>,
+    /// Whether the window scale should be set automatically at the beginning of the application.
+    pub(crate) auto_scaled: bool,
 
     #[serde(skip)]
     pub(crate) sync: bool,
@@ -31,8 +34,9 @@ impl WindowState {
         WindowState {
             mode: WindowMode::BorderlessFullscreen,
             resolution: None,
-            scale: None,
             position: None,
+            scale: None,
+            auto_scaled: true,
             sync: true,
         }
     }
@@ -42,8 +46,9 @@ impl WindowState {
         WindowState {
             mode: WindowMode::Fullscreen,
             resolution: None,
-            scale: None,
             position: None,
+            scale: None,
+            auto_scaled: true,
             sync: true,
         }
     }
@@ -52,8 +57,9 @@ impl WindowState {
         WindowState {
             mode: WindowMode::SizedFullscreen,
             resolution: None,
-            scale: None,
             position: None,
+            scale: None,
+            auto_scaled: true,
             sync: true,
         }
     }
@@ -63,8 +69,9 @@ impl WindowState {
         WindowState {
             mode: WindowMode::Windowed,
             resolution: Some((width, height)),
-            scale: None,
             position: None,
+            scale: None,
+            auto_scaled: true,
             sync: true,
         }
     }
@@ -88,6 +95,13 @@ impl WindowState {
 
 impl Default for WindowState {
     fn default() -> WindowState {
-        WindowState::borderless_fullscreen()
+        WindowState {
+            mode: WindowMode::BorderlessFullscreen,
+            resolution: None,
+            position: None,
+            scale: None,
+            auto_scaled: false,
+            sync: true,
+        }
     }
 }
