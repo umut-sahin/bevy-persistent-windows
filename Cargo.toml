@@ -23,8 +23,9 @@ bevy = { version = "0.15" }
 bevy-persistent = { version = "0.7", features = ["toml"] }
 
 [features]
-default = []
+default = ["x11"]
 library = ["bevy-persistent/library"]
+x11 = ["bevy/x11"]
 
 [package.metadata.docs.rs]
 features = ["library"]
