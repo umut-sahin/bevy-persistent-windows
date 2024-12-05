@@ -54,7 +54,7 @@ fn fullscreen_toggle(
         let mut primary_window_state = query.get_single_mut().unwrap();
 
         if primary_window_state.mode == WindowMode::Windowed {
-            primary_window_state.mode = WindowMode::Fullscreen;
+            primary_window_state.mode = WindowMode::Fullscreen(MonitorSelection::Current);
         } else {
             primary_window_state.mode = WindowMode::Windowed;
         }
