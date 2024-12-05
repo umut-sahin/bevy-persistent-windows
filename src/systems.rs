@@ -2,6 +2,27 @@
 
 use crate::prelude::*;
 
+/// System to automatically scale persistent windows on the first run.
+pub fn auto_scale(
+    mut persistent_windows: Query<
+        (Entity, &mut Persistent<WindowState>),
+        Changed<Persistent<WindowState>>,
+    >,
+    winit_windows: NonSend<WinitWindows>,
+) {
+    for (entity, mut state) in persistent_windows.iter_mut() {
+        if state.auto_scaled {
+            if let Some(winit_window) = winit_windows.get_window(entity) {
+                if let Some(current_monitor) = winit_window.current_monitor() {
+                    state.auto_scaled = false;
+                    state.scale = Some(current_monitor.scale_factor());
+                    state.persist().ok();
+                }
+            }
+        }
+    }
+}
+
 /// System to update persistent state when window is moved.
 pub fn on_persistent_window_moved(
     mut window_moved_events: EventReader<WindowMoved>,

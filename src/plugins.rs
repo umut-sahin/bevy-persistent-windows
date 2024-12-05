@@ -23,6 +23,7 @@ impl Plugin for PersistentWindowsPlugin {
             utils::apply_state_to_window(&mut window, state);
         }
 
+        app.add_systems(Startup, auto_scale);
         app.add_systems(
             PreUpdate,
             (
