@@ -20,18 +20,24 @@ fn main() {
         .unwrap_or(Path::new("session").join("data").join("state"))
         .join("primary");
 
-    app.world_mut().spawn((PrimaryWindow, PersistentWindowBundle {
-        window: Window { title: "I can be moved persistently.".to_owned(), ..Default::default() },
-        state: Persistent::<WindowState>::builder()
-            .name("primary window state")
-            .format(StorageFormat::Toml)
-            .path(state_directory.join("primary-window.toml"))
-            .default(WindowState::fullscreen())
-            .revertible(true)
-            .revert_to_default_on_deserialization_errors(true)
-            .build()
-            .expect("failed to create the persistent primary window state"),
-    }));
+    app.world_mut().spawn((
+        PrimaryWindow,
+        PersistentWindowBundle {
+            window: Window {
+                title: "I can be moved persistently.".to_owned(),
+                ..Default::default()
+            },
+            state: Persistent::<WindowState>::builder()
+                .name("primary window state")
+                .format(StorageFormat::Toml)
+                .path(state_directory.join("primary-window.toml"))
+                .default(WindowState::fullscreen())
+                .revertible(true)
+                .revert_to_default_on_deserialization_errors(true)
+                .build()
+                .expect("failed to create the persistent primary window state"),
+        },
+    ));
 
     app.add_plugins(PersistentWindowsPlugin);
 
@@ -42,13 +48,12 @@ fn main() {
 
 fn fullscreen_toggle(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<&mut Persistent<WindowState>, With<PrimaryWindow>>,
+    mut primary_window_state: Single<&mut Persistent<WindowState>, With<PrimaryWindow>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
-        let mut primary_window_state = query.get_single_mut().unwrap();
-
         if primary_window_state.mode == WindowMode::Windowed {
-            primary_window_state.mode = WindowMode::Fullscreen(MonitorSelection::Current);
+            primary_window_state.mode =
+                WindowMode::Fullscreen(MonitorSelection::Primary, VideoModeSelection::Current);
         } else {
             primary_window_state.mode = WindowMode::Windowed;
         }
@@ -60,7 +65,7 @@ fn fullscreen_toggle(
 fn movement(
     time: Res<Time>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut query: Query<&mut Persistent<WindowState>, With<PrimaryWindow>>,
+    mut primary_window_state: Single<&mut Persistent<WindowState>, With<PrimaryWindow>>,
 ) {
     let mut position_change = (0.0, 0.0);
     let mut resolution_change = (0.0, 0.0);
@@ -88,7 +93,6 @@ fn movement(
         return;
     }
 
-    let mut primary_window_state = query.get_single_mut().unwrap();
     if let Some(resolution) = &mut primary_window_state.resolution {
         resolution.0 = ((resolution.0 as f32) + (resolution_change.0)) as u32;
         resolution.1 = ((resolution.1 as f32) + (resolution_change.1)) as u32;

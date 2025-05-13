@@ -44,18 +44,7 @@ impl WindowState {
     /// Creates a fullscreen state.
     pub fn fullscreen() -> WindowState {
         WindowState {
-            mode: WindowMode::Fullscreen(MonitorSelection::Primary),
-            resolution: None,
-            position: None,
-            scale: None,
-            auto_scaled: true,
-            sync: true,
-        }
-    }
-    /// Creates a sized fullscreen state.
-    pub fn sized_fullscreen() -> WindowState {
-        WindowState {
-            mode: WindowMode::SizedFullscreen(MonitorSelection::Primary),
+            mode: WindowMode::Fullscreen(MonitorSelection::Primary, VideoModeSelection::Current),
             resolution: None,
             position: None,
             scale: None,
