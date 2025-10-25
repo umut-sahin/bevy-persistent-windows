@@ -6,6 +6,10 @@ A [Bevy](https://bevyengine.org/) plugin to easily create and manage windows tha
 
 When you're developing a game, thus frequently restarting it, you may (understandably) desire that the windows just stay where they were in the last run. Implementing this manually in every project you create is error-prone and time-consuming (trust me, I know). This plugin aims to make it as seamless as possible!
 
+## Warning
+
+This plugin doesn't work in Wayland with `wayland` feature. The problem is that Wayland doesn’t expose the windows position to client applications, so `winit` doesn't emit any `WindowMoved` events. Feel free to disable `wayland` feature it if it's required.
+
 ## Installation
 
 We'll be using [bevy-persistent](https://github.com/umut-sahin/bevy-persistent/) to store window states persistently, so let's add it first:
