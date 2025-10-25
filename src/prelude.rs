@@ -5,6 +5,7 @@ pub(crate) use crate::{
     utils,
 };
 pub(crate) use bevy::{
+    ecs::system::NonSendMarker,
     prelude::*,
     window::{
         WindowMode,
@@ -12,7 +13,7 @@ pub(crate) use bevy::{
         WindowResolution,
         WindowScaleFactorChanged,
     },
-    winit::WinitWindows,
+    winit::WINIT_WINDOWS,
 };
 pub(crate) use bevy_persistent::prelude::*;
 pub(crate) use serde::{
