@@ -3,7 +3,7 @@
 use crate::prelude::*;
 
 /// Window state.
-#[derive(Clone, Component, Debug, Deserialize, PartialEq, Resource, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Resource, Serialize)]
 #[serde(default)]
 pub struct WindowState {
     /// Mode of the window.
