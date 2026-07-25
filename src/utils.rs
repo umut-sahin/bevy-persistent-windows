@@ -21,7 +21,13 @@ pub fn apply_state_to_window(window: &mut Window, state: &Persistent<WindowState
     window.mode = state.mode;
 
     if let Some((width, height)) = state.resolution {
-        window.resolution = WindowResolution::new(width, height);
+        // `WindowResolution::new` would reset `scale_factor` to 1.0, discarding
+        // whatever real scale factor winit already established for this window
+        // (this system can run either before or after the OS window exists).
+        // `set` instead reuses the current scale factor to convert these
+        // logical pixels to physical, so a persisted size is re-applied
+        // exactly regardless of ordering or which monitor it's opened on.
+        window.resolution.set(width as f32, height as f32);
     }
 
     if let Some(position) = state.position {
