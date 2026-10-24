@@ -37,7 +37,8 @@ fn main() {
                 .revertible(true)
                 .revert_to_default_on_deserialization_errors(true)
                 .build()
-                .expect("failed to create persistent primary window state"),
+                .expect("failed to create persistent primary window state")
+                .into(),
         },
     ));
 
@@ -54,7 +55,7 @@ fn main() {
 fn spawn_persistent_window(
     mut commands: Commands,
     directories: Res<Directories>,
-    persistent_windows: Query<(), (With<Window>, With<Persistent<WindowState>>)>,
+    persistent_windows: Query<(), (With<Window>, With<PersistentWindowState>)>,
 ) {
     let persistent_window_count = persistent_windows.iter().len();
     commands.spawn(PersistentWindowBundle {
@@ -79,6 +80,7 @@ fn spawn_persistent_window(
                     "failed to create the persistent window #{} state: {}",
                     persistent_window_count, error
                 )
-            }),
+            })
+            .into(),
     });
 }

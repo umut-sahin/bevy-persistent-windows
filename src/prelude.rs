@@ -20,10 +20,14 @@ pub(crate) use serde::{
     Deserialize,
     Serialize,
 };
-pub(crate) use std::ops::DerefMut;
+pub(crate) use std::ops::{
+    Deref,
+    DerefMut,
+};
 
 pub use crate::{
     PersistentWindowBundle,
+    PersistentWindowState,
     PersistentWindowsPlugin,
     WindowState,
 };

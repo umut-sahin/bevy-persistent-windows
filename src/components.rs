@@ -2,8 +2,32 @@
 
 use crate::prelude::*;
 
+/// A persistent state attached to a window.
+#[derive(Component)]
+pub struct PersistentWindowState(pub Persistent<WindowState>);
+
+impl From<Persistent<WindowState>> for PersistentWindowState {
+    fn from(state: Persistent<WindowState>) -> Self {
+        Self(state)
+    }
+}
+
+impl Deref for PersistentWindowState {
+    type Target = Persistent<WindowState>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for PersistentWindowState {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
 /// Window state.
-#[derive(Clone, Component, Debug, Deserialize, PartialEq, Resource, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Resource, Serialize)]
 #[serde(default)]
 pub struct WindowState {
     /// Mode of the window.

@@ -5,8 +5,8 @@ use crate::prelude::*;
 /// System to automatically scale persistent windows on the first run.
 pub fn auto_scale(
     mut persistent_windows: Query<
-        (Entity, &mut Persistent<WindowState>),
-        Changed<Persistent<WindowState>>,
+        (Entity, &mut PersistentWindowState),
+        Changed<PersistentWindowState>,
     >,
     _to_run_in_main_thread: NonSendMarker,
 ) {
@@ -28,7 +28,7 @@ pub fn auto_scale(
 /// System to update persistent state when window is moved.
 pub fn on_persistent_window_moved(
     mut window_moved_events: MessageReader<WindowMoved>,
-    mut persistent_windows: Query<(Entity, &Window, &mut Persistent<WindowState>)>,
+    mut persistent_windows: Query<(Entity, &Window, &mut PersistentWindowState)>,
     _to_run_in_main_thread: NonSendMarker,
 ) {
     if window_moved_events.is_empty() {
@@ -52,7 +52,7 @@ pub fn on_persistent_window_moved(
 /// System to update persistent state when window is resized.
 pub fn on_persistent_window_resized(
     mut window_resized_events: MessageReader<WindowResized>,
-    mut persistent_windows: Query<(Entity, &Window, &mut Persistent<WindowState>)>,
+    mut persistent_windows: Query<(Entity, &Window, &mut PersistentWindowState)>,
     _to_run_in_main_thread: NonSendMarker,
 ) {
     if window_resized_events.is_empty() {
@@ -76,7 +76,7 @@ pub fn on_persistent_window_resized(
 /// System to update persistent state when window scale factor is changed.
 pub fn on_persistent_window_scale_factor_changed(
     mut window_scale_factor_changed_events: MessageReader<WindowScaleFactorChanged>,
-    mut persistent_windows: Query<(Entity, &Window, &mut Persistent<WindowState>)>,
+    mut persistent_windows: Query<(Entity, &Window, &mut PersistentWindowState)>,
     _to_run_in_main_thread: NonSendMarker,
 ) {
     if window_scale_factor_changed_events.is_empty() {
@@ -100,8 +100,8 @@ pub fn on_persistent_window_scale_factor_changed(
 /// System to update window when persistent state is modified programmatically.
 pub fn on_persistent_window_state_changed(
     mut persistent_windows: Query<
-        (&mut Window, &mut Persistent<WindowState>),
-        Changed<Persistent<WindowState>>,
+        (&mut Window, &mut PersistentWindowState),
+        Changed<PersistentWindowState>,
     >,
 ) {
     for (mut window, mut state) in persistent_windows.iter_mut() {

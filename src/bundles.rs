@@ -13,5 +13,5 @@ pub struct PersistentWindowBundle {
     /// Window component.
     pub window: Window,
     /// Persistent window state component.
-    pub state: Persistent<WindowState>,
+    pub state: PersistentWindowState,
 }

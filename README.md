@@ -34,7 +34,7 @@ As mentioned before, we'll be using [bevy-persistent](https://github.com/umut-sa
 use bevy_persistent::prelude::*;
 ```
 
-We need [WindowState](https://docs.rs/bevy-persistent-windows/latest/bevy_persistent_windows/components/struct.WindowState.html), [PersistentWindowBundle](https://docs.rs/bevy-persistent-windows/latest/bevy_persistent_windows/bundles/struct.PersistentWindowBundle.html) and [PersistentWindowsPlugin](https://docs.rs/bevy-persistent-windows/latest/bevy_persistent_windows/plugins/struct.PersistentWindowsPlugin.html) types to use the library, and they are exported from the prelude module:
+We need [WindowState](https://docs.rs/bevy-persistent-windows/latest/bevy_persistent_windows/components/struct.WindowState.html), [PersistentWindowState](https://docs.rs/bevy-persistent-windows/latest/bevy_persistent_windows/components/struct.PersistentState.html), [PersistentWindowBundle](https://docs.rs/bevy-persistent-windows/latest/bevy_persistent_windows/bundles/struct.PersistentWindowBundle.html) and [PersistentWindowsPlugin](https://docs.rs/bevy-persistent-windows/latest/bevy_persistent_windows/plugins/struct.PersistentWindowsPlugin.html) types to use the library, and they are exported from the prelude module:
 
 ```rust
 use bevy_persistent_windows::prelude::*;
@@ -79,7 +79,8 @@ app.world_mut().spawn((
             .revertible(true)
             .revert_to_default_on_deserialization_errors(true)
             .build()
-            .expect("failed to create the persistent primary window state"),
+            .expect("failed to create the persistent primary window state")
+            .into(),
     },
 ));
 ```
@@ -110,14 +111,13 @@ Say you want to toggle fullscreen when space bar is pressed, you can add this sy
 
 ```rust
 fn fullscreen_toggle(
-    keyboard_input: Res<Input<KeyCode>>,
-    mut query: Query<&mut Persistent<WindowState>, With<PrimaryWindow>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut primary_window_state: Single<&mut PersistentWindowState, With<PrimaryWindow>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
-        let mut primary_window_state = query.get_single_mut().unwrap();
-
         if primary_window_state.mode == WindowMode::Windowed {
-            primary_window_state.mode = WindowMode::Fullscreen;
+            primary_window_state.mode =
+                WindowMode::Fullscreen(MonitorSelection::Primary, VideoModeSelection::Current);
         } else {
             primary_window_state.mode = WindowMode::Windowed;
         }
@@ -132,8 +132,8 @@ Or if you want to move the window with arrow keys, and resize it with ctrl + arr
 ```rust
 fn movement(
     time: Res<Time>,
-    keyboard_input: Res<Input<KeyCode>>,
-    mut query: Query<&mut Persistent<WindowState>, With<PrimaryWindow>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut primary_window_state: Single<&mut PersistentWindowState, With<PrimaryWindow>>,
 ) {
     let mut position_change = (0.0, 0.0);
     let mut resolution_change = (0.0, 0.0);
@@ -144,16 +144,16 @@ fn movement(
         &mut position_change
     };
 
-    if keyboard_input.pressed(KeyCode::Up) {
+    if keyboard_input.pressed(KeyCode::ArrowUp) {
         change.1 -= 3.0 * time.delta().as_millis() as f32;
     }
-    if keyboard_input.pressed(KeyCode::Left) {
+    if keyboard_input.pressed(KeyCode::ArrowLeft) {
         change.0 -= 3.0 * time.delta().as_millis() as f32;
     }
-    if keyboard_input.pressed(KeyCode::Down) {
+    if keyboard_input.pressed(KeyCode::ArrowDown) {
         change.1 += 3.0 * time.delta().as_millis() as f32;
     }
-    if keyboard_input.pressed(KeyCode::Right) {
+    if keyboard_input.pressed(KeyCode::ArrowRight) {
         change.0 += 3.0 * time.delta().as_millis() as f32;
     }
 
@@ -161,7 +161,6 @@ fn movement(
         return;
     }
 
-    let mut primary_window_state = query.get_single_mut().unwrap();
     if let Some(resolution) = &mut primary_window_state.resolution {
         resolution.0 = ((resolution.0 as f32) + (resolution_change.0)) as u32;
         resolution.1 = ((resolution.1 as f32) + (resolution_change.1)) as u32;
@@ -184,7 +183,7 @@ When you want to spawn additional windows, you can just spawn a new [PersistentW
 ```rust
 fn spawn_persistent_window(
     mut commands: Commands,
-    persistent_windows: Query<(), (With<Persistent<WindowState>>, With<Window>)>,
+    persistent_windows: Query<(), (With<PersistentWindowState>, With<Window>)>,
 ) {
     let state_directory = dirs::data_dir()
         .expect("failed to get the platforms data directory")
@@ -211,7 +210,8 @@ fn spawn_persistent_window(
                         "failed to create the persistent window #{} state: {}",
                         persistent_window_count, error
                     )
-                }),
+                })
+                .into(),
         },
     ));
 }

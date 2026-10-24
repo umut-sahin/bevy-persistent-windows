@@ -35,7 +35,8 @@ fn main() {
                 .revertible(true)
                 .revert_to_default_on_deserialization_errors(true)
                 .build()
-                .expect("failed to create the persistent primary window state"),
+                .expect("failed to create the persistent primary window state")
+                .into(),
         },
     ));
 
@@ -48,7 +49,7 @@ fn main() {
 
 fn fullscreen_toggle(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut primary_window_state: Single<&mut Persistent<WindowState>, With<PrimaryWindow>>,
+    mut primary_window_state: Single<&mut PersistentWindowState, With<PrimaryWindow>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
         if primary_window_state.mode == WindowMode::Windowed {
@@ -65,7 +66,7 @@ fn fullscreen_toggle(
 fn movement(
     time: Res<Time>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut primary_window_state: Single<&mut Persistent<WindowState>, With<PrimaryWindow>>,
+    mut primary_window_state: Single<&mut PersistentWindowState, With<PrimaryWindow>>,
 ) {
     let mut position_change = (0.0, 0.0);
     let mut resolution_change = (0.0, 0.0);

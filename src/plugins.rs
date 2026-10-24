@@ -17,7 +17,7 @@ pub struct PersistentWindowsPlugin;
 impl Plugin for PersistentWindowsPlugin {
     fn build(&self, app: &mut App) {
         let mut persistent_windows =
-            app.world_mut().query::<(&mut Window, &Persistent<WindowState>)>();
+            app.world_mut().query::<(&mut Window, &PersistentWindowState)>();
 
         for (mut window, state) in persistent_windows.iter_mut(app.world_mut()) {
             utils::apply_state_to_window(&mut window, state);

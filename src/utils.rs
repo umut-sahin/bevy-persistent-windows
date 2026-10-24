@@ -3,7 +3,7 @@
 use crate::prelude::*;
 
 /// Propagates the changes made to the state to the window.
-pub fn apply_state_to_window(window: &mut Window, state: &Persistent<WindowState>) {
+pub fn apply_state_to_window(window: &mut Window, state: &PersistentWindowState) {
     window.mode = state.mode;
 
     if let Some((width, height)) = state.resolution {
@@ -22,7 +22,7 @@ pub fn apply_state_to_window(window: &mut Window, state: &Persistent<WindowState
 /// Propagates the changes made to the window to the state.
 pub fn apply_window_to_state(
     window: &Window,
-    state: &mut Persistent<WindowState>,
+    state: &mut PersistentWindowState,
     winit_window: &winit::window::Window,
 ) {
     let mode = window.mode;

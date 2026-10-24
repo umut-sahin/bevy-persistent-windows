@@ -29,7 +29,8 @@ fn main() {
                 .revertible(true)
                 .revert_to_default_on_deserialization_errors(true)
                 .build()
-                .expect("failed to create the persistent primary window state"),
+                .expect("failed to create the persistent primary window state")
+                .into(),
         },
     ));
 

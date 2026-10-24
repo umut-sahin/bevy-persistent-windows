@@ -11,6 +11,9 @@ pub mod prelude;
 
 pub use crate::{
     bundles::PersistentWindowBundle,
-    components::WindowState,
+    components::{
+        PersistentWindowState,
+        WindowState,
+    },
     plugins::PersistentWindowsPlugin,
 };
